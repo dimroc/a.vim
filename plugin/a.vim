@@ -107,7 +107,7 @@ call <SID>AddAlternateExtensionMapping('aspx', 'aspx.cs,aspx.vb')
 " Setup default search path, unless the user has specified
 " a path in their [._]vimrc. 
 if (!exists('g:alternateSearchPath'))
-  let g:alternateSearchPath = 'sfr:../source,sfr:../src,sfr:../include,sfr:../inc'
+  let g:alternateSearchPath = 'sfr:./tests/,sfr:../source,sfr:../src,sfr:../include,sfr:../inc'
 endif
 
 " If this variable is true then a.vim will not alternate to a file/buffer which
@@ -445,15 +445,16 @@ function! AlternateFile(splitWindow, ...)
      if (extension != "")
         let allfiles1 = EnumerateFilesByExtension(currentPath, baseName, extension)
         let allfiles2 = EnumerateFilesByExtensionInPath(baseName, extension, g:alternateSearchPath, currentPath)
+        let allfiles3 = EnumerateFilesByExtensionInPath("test_".baseName, extension, g:alternateSearchPath, currentPath)
 
         if (allfiles1 != "")
            if (allfiles2 != "")
-              let allfiles = allfiles1 . ',' . allfiles2
+              let allfiles = allfiles1 . ',' . allfiles2 . ',' . allfiles3
            else
               let allfiles = allfiles1
            endif
         else 
-           let allfiles = allfiles2
+           let allfiles = allfiles2 . ',' . allfiles3
         endif
      endif
 
